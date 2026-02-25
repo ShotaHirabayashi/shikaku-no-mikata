@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE_NAME } from "@/lib/constants";
 
 export default function Footer() {
@@ -9,12 +10,24 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
           <nav className="flex gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <a href="#" className="hover:text-primary-600 transition-colors">
+            <Link
+              href="/about"
+              className="transition-colors hover:text-primary-600"
+            >
+              サイトについて
+            </Link>
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-primary-600"
+            >
               プライバシーポリシー
-            </a>
-            <a href="#" className="hover:text-primary-600 transition-colors">
+            </Link>
+            <Link
+              href="/contact"
+              className="transition-colors hover:text-primary-600"
+            >
               お問い合わせ
-            </a>
+            </Link>
           </nav>
         </div>
       </div>

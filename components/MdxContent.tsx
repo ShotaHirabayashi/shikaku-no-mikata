@@ -1,4 +1,5 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Image from "next/image";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -71,6 +72,41 @@ const mdxComponents = {
   ),
   strong: (props: React.HTMLAttributes<HTMLElement>) => (
     <strong className="font-bold text-gray-900 dark:text-white" {...props} />
+  ),
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <figure className="mb-4">
+      <Image
+        src={props.src ?? ""}
+        alt={props.alt ?? ""}
+        width={800}
+        height={450}
+        className="rounded-lg"
+        sizes="(max-width: 768px) 100vw, 768px"
+      />
+      {props.alt && (
+        <figcaption className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+          {props.alt}
+        </figcaption>
+      )}
+    </figure>
+  ),
+  code: (props: React.HTMLAttributes<HTMLElement>) => {
+    const isInline = !String(props.children).includes("\n");
+    if (isInline) {
+      return (
+        <code
+          className="rounded bg-gray-100 px-1.5 py-0.5 text-sm text-primary-700 dark:bg-gray-800 dark:text-primary-300"
+          {...props}
+        />
+      );
+    }
+    return <code {...props} />;
+  },
+  pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
+    <pre
+      className="mb-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100"
+      {...props}
+    />
   ),
 };
 

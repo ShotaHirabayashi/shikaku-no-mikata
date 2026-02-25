@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
-import Header from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -58,9 +59,10 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col font-sans antialiased">
-        <Header />
+        <HeaderNav />
         <main className="flex-1">{children}</main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

@@ -73,3 +73,59 @@ export function getAllSlugs(): string[] {
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => f.replace(/\.mdx$/, ""));
 }
+
+export function getPostsByCategory(category: string): PostMeta[] {
+  return getAllPosts().filter((post) => post.category === category);
+}
+
+export function getPostsByTag(tag: string): PostMeta[] {
+  return getAllPosts().filter((post) => post.tags.includes(tag));
+}
+
+export function getAllCategories(): { name: string; count: number }[] {
+  const posts = getAllPosts();
+  const map = new Map<string, number>();
+  for (const post of posts) {
+    if (post.category) {
+      map.set(post.category, (map.get(post.category) ?? 0) + 1);
+    }
+  }
+  return Array.from(map, ([name, count]) => ({ name, count })).sort(
+    (a, b) => b.count - a.count
+  );
+}
+
+export function getAllTags(): { name: string; count: number }[] {
+  const posts = getAllPosts();
+  const map = new Map<string, number>();
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      map.set(tag, (map.get(tag) ?? 0) + 1);
+    }
+  }
+  return Array.from(map, ([name, count]) => ({ name, count })).sort(
+    (a, b) => b.count - a.count
+  );
+}
+
+export function getRelatedPosts(slug: string, limit = 4): PostMeta[] {
+  const current = getPostBySlug(slug);
+  if (!current) return [];
+
+  const all = getAllPosts().filter((p) => p.slug !== slug);
+
+  const scored = all.map((post) => {
+    let score = 0;
+    if (post.category === current.category) score += 3;
+    for (const tag of post.tags) {
+      if (current.tags.includes(tag)) score += 1;
+    }
+    return { post, score };
+  });
+
+  return scored
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.post);
+}

@@ -1,9 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllSlugs, getPostBySlug } from "@/lib/mdx";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
-import MdxContent from "@/components/MdxContent";
 import Link from "next/link";
+import { getAllSlugs, getPostBySlug, getRelatedPosts } from "@/lib/mdx";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { extractToc } from "@/lib/toc";
+import MdxContent from "@/components/MdxContent";
+import Breadcrumb from "@/components/Breadcrumb";
+import TableOfContents from "@/components/TableOfContents";
+import RelatedPosts from "@/components/RelatedPosts";
+import ShareButtons from "@/components/ShareButtons";
 
 type Props = {
   params: { slug: string };
@@ -45,7 +50,11 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-function JsonLd({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> }) {
+function JsonLd({
+  post,
+}: {
+  post: NonNullable<ReturnType<typeof getPostBySlug>>;
+}) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -83,31 +92,35 @@ export default async function ArticlePage({ params }: Props) {
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
+  const tocItems = extractToc(post.content);
+  const relatedPosts = getRelatedPosts(post.slug);
+
   return (
     <>
       <JsonLd post={post} />
 
       <article className="mx-auto max-w-3xl px-4 py-10">
-        {/* Breadcrumb */}
-        <nav className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-          <Link
-            href="/"
-            className="hover:text-primary-600 transition-colors"
-          >
-            ホーム
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-700 dark:text-gray-200">
-            {post.title}
-          </span>
-        </nav>
+        {/* パンくず */}
+        <Breadcrumb
+          items={[
+            { name: "ホーム", href: "/" },
+            {
+              name: post.category,
+              href: `/category/${encodeURIComponent(post.category)}`,
+            },
+            { name: post.title },
+          ]}
+        />
 
-        {/* Header */}
+        {/* ヘッダー */}
         <header className="mb-8">
           <div className="mb-3 flex items-center gap-3">
-            <span className="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-700 dark:bg-primary-900 dark:text-primary-300">
+            <Link
+              href={`/category/${encodeURIComponent(post.category)}`}
+              className="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800"
+            >
               {post.category}
-            </span>
+            </Link>
             <time
               dateTime={post.date}
               className="text-sm text-gray-500 dark:text-gray-400"
@@ -127,24 +140,37 @@ export default async function ArticlePage({ params }: Props) {
           </p>
         </header>
 
-        {/* Content */}
+        {/* 目次 */}
+        <TableOfContents items={tocItems} />
+
+        {/* 本文 */}
         <div className="article-content">
           <MdxContent source={post.content} />
         </div>
 
-        {/* Tags */}
+        {/* タグ */}
         <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-700">
           {post.tags.map((tag) => (
-            <span
+            <Link
               key={tag}
-              className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+              href={`/tag/${encodeURIComponent(tag)}`}
+              className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               #{tag}
-            </span>
+            </Link>
           ))}
         </div>
 
-        {/* Back link */}
+        {/* SNSシェア */}
+        <ShareButtons
+          url={`${SITE_URL}/${post.slug}`}
+          title={post.title}
+        />
+
+        {/* 関連記事 */}
+        <RelatedPosts posts={relatedPosts} />
+
+        {/* 戻るリンク */}
         <div className="mt-8">
           <Link
             href="/"

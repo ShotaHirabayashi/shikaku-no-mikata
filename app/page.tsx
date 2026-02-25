@@ -1,13 +1,33 @@
 import Image from "next/image";
 import { getAllPosts } from "@/lib/mdx";
 import ArticleCard from "@/components/ArticleCard";
-import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+
+function OrganizationJsonLd() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    description: SITE_DESCRIPTION,
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
 
 export default function HomePage() {
   const posts = getAllPosts();
 
   return (
     <>
+      <OrganizationJsonLd />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-8 px-4 py-12 md:flex-row md:py-20">
