@@ -10,7 +10,7 @@ type Props = {
 
 export function generateStaticParams() {
   return getAllCategories().map((c) => ({
-    category: encodeURIComponent(c.name),
+    category: c.name,
   }));
 }
 
@@ -27,7 +27,7 @@ export default function CategoryPage({ params }: Props) {
   const posts = getPostsByCategory(category);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-10">
       <Breadcrumb
         items={[
           { name: "ホーム", href: "/" },

@@ -10,7 +10,7 @@ type Props = {
 
 export function generateStaticParams() {
   return getAllTags().map((t) => ({
-    tag: encodeURIComponent(t.name),
+    tag: t.name,
   }));
 }
 
@@ -27,7 +27,7 @@ export default function TagPage({ params }: Props) {
   const posts = getPostsByTag(tag);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 py-10">
       <Breadcrumb
         items={[
           { name: "ホーム", href: "/" },
