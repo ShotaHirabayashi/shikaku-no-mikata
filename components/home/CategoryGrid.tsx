@@ -6,32 +6,22 @@ type Props = {
   categoryCounts: { name: string; count: number }[];
 };
 
-const colorMap: Record<string, string> = {
-  primary:
-    "bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-400 dark:hover:bg-primary-900",
-  pink: "bg-pink-50 text-pink-600 hover:bg-pink-100 dark:bg-pink-950 dark:text-pink-400 dark:hover:bg-pink-900",
-  amber:
-    "bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950 dark:text-amber-400 dark:hover:bg-amber-900",
-  emerald:
-    "bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900",
-  rose: "bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950 dark:text-rose-400 dark:hover:bg-rose-900",
-  violet:
-    "bg-violet-50 text-violet-600 hover:bg-violet-100 dark:bg-violet-950 dark:text-violet-400 dark:hover:bg-violet-900",
-};
-
 export default function CategoryGrid({ categoryCounts }: Props) {
   return (
-    <section className="section-padding mx-auto max-w-6xl">
-      <div className="mb-10 text-center">
-        <h2 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">
-          カテゴリから探す
+    <section className="mx-auto max-w-6xl px-4 py-14">
+      <div className="mb-8 flex items-baseline justify-between">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          カテゴリ
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          あなたの興味に合ったジャンルから資格を見つけましょう
-        </p>
+        <Link
+          href="/categories"
+          className="text-sm text-gray-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+        >
+          すべて見る →
+        </Link>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide md:grid md:grid-cols-3 md:gap-4 md:overflow-visible lg:grid-cols-6">
         {CATEGORIES.map((cat) => {
           const count =
             categoryCounts.find((c) => c.name === cat.name)?.count ?? 0;
@@ -39,20 +29,17 @@ export default function CategoryGrid({ categoryCounts }: Props) {
             <Link
               key={cat.name}
               href={`/category/${encodeURIComponent(cat.name)}`}
-              className={`card-hover group flex items-start gap-4 rounded-2xl p-5 transition-colors ${colorMap[cat.color] ?? colorMap.primary}`}
+              className="group flex min-w-[140px] flex-col items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-5 text-center transition-all hover:border-primary-400 hover:shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:hover:border-primary-500 md:min-w-0"
             >
-              <div className="flex-shrink-0 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-                <CategoryIcon name={cat.icon} className="h-6 w-6" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold">{cat.name}</h3>
-                  <span className="rounded-full bg-white/60 px-2 py-0.5 text-xs font-medium dark:bg-gray-800/60">
-                    {count}件
-                  </span>
-                </div>
-                <p className="mt-1 text-sm opacity-80">{cat.description}</p>
-              </div>
+              <span className="text-gray-400 transition-colors group-hover:text-primary-600 dark:text-gray-500 dark:group-hover:text-primary-400">
+                <CategoryIcon name={cat.icon} className="h-5 w-5" />
+              </span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                {cat.name}
+              </span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">
+                {count}件
+              </span>
             </Link>
           );
         })}

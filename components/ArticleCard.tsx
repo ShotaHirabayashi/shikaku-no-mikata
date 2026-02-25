@@ -9,117 +9,155 @@ function getCategoryIcon(categoryName: string) {
   return cat?.icon ?? "scale";
 }
 
-const gradients = [
-  "from-primary-400 to-primary-600",
-  "from-accent-400 to-accent-600",
-  "from-emerald-400 to-emerald-600",
-  "from-amber-400 to-amber-600",
-  "from-rose-400 to-rose-600",
-  "from-violet-400 to-violet-600",
-];
+type Props = {
+  post: PostMeta;
+  variant?: "default" | "lead";
+};
 
-function getGradient(slug: string) {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = slug.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return gradients[Math.abs(hash) % gradients.length];
-}
-
-export default function ArticleCard({ post }: { post: PostMeta }) {
+export default function ArticleCard({ post, variant = "default" }: Props) {
   const difficultyInfo =
     post.difficulty ? DIFFICULTY_LABELS[post.difficulty] : null;
 
+  if (variant === "lead") {
+    return <LeadCard post={post} difficultyInfo={difficultyInfo} />;
+  }
+
   return (
-    <article className="card-hover group overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-      <div className="relative aspect-video overflow-hidden">
+    <article className="card-accent group rounded-lg">
+      {/* サムネイル */}
+      <div className="relative aspect-[16/10] overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-800">
         {post.thumbnail ? (
           <Image
             src={post.thumbnail}
             alt={post.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div
-            className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${getGradient(post.slug)}`}
-          >
+          <div className="flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-800">
             <CategoryIcon
               name={getCategoryIcon(post.category)}
-              className="h-12 w-12 text-white/80"
+              className="h-10 w-10 text-gray-300 dark:text-gray-600"
             />
           </div>
         )}
         {difficultyInfo && (
           <span
-            className={`absolute right-2 top-2 rounded-full px-2.5 py-0.5 text-xs font-semibold ${difficultyInfo.className}`}
+            className={`absolute right-2 top-2 rounded px-2 py-0.5 text-[11px] font-semibold ${difficultyInfo.className}`}
           >
             {difficultyInfo.label}
           </span>
         )}
       </div>
 
-      <div className="p-5">
-        <div className="mb-2 flex items-center gap-2">
+      <div className="p-4">
+        <div className="mb-2 flex items-center gap-2 text-xs">
           <Link
             href={`/category/${encodeURIComponent(post.category)}`}
-            className="rounded-full bg-primary-100 px-3 py-0.5 text-xs font-medium text-primary-700 transition-colors hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800"
+            className="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
           >
             {post.category}
           </Link>
-          <time
-            dateTime={post.date}
-            className="text-xs text-gray-500 dark:text-gray-400"
-          >
+          <span className="text-gray-300 dark:text-gray-600">·</span>
+          <time dateTime={post.date} className="text-gray-400 dark:text-gray-500">
             {new Date(post.date).toLocaleDateString("ja-JP", {
               year: "numeric",
-              month: "long",
+              month: "short",
               day: "numeric",
             })}
           </time>
         </div>
 
-        <h2 className="mb-2 text-lg font-bold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
+        <h2 className="mb-2 text-[15px] font-bold leading-snug text-gray-900 transition-colors group-hover:text-primary-700 dark:text-white dark:group-hover:text-primary-400">
           <Link href={`/${post.slug}`}>{post.title}</Link>
         </h2>
 
-        <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-300">
+        <p className="line-clamp-2 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
           {post.description}
         </p>
 
         {(post.costRange || post.studyPeriod) && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {post.costRange && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-                </svg>
-                {post.costRange}
-              </span>
-            )}
-            {post.studyPeriod && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                {post.studyPeriod}
-              </span>
-            )}
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-gray-100 pt-3 text-xs text-gray-400 dark:border-gray-800 dark:text-gray-500">
+            {post.costRange && <span>{post.costRange}</span>}
+            {post.studyPeriod && <span>{post.studyPeriod}</span>}
           </div>
         )}
+      </div>
+    </article>
+  );
+}
 
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {post.tags.slice(0, 3).map((tag) => (
-            <Link
-              key={tag}
-              href={`/tag/${encodeURIComponent(tag)}`}
-              className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+/* リード記事: 横長レイアウト */
+function LeadCard({
+  post,
+  difficultyInfo,
+}: {
+  post: PostMeta;
+  difficultyInfo: { label: string; className: string } | null;
+}) {
+  return (
+    <article className="card-accent group rounded-lg">
+      <div className="flex flex-col md:flex-row">
+        {/* サムネイル */}
+        <div className="relative aspect-[16/10] overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-800 md:aspect-auto md:w-1/2 md:rounded-l-lg md:rounded-tr-none">
+          {post.thumbnail ? (
+            <Image
+              src={post.thumbnail}
+              alt={post.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          ) : (
+            <div className="flex h-full min-h-[200px] w-full items-center justify-center bg-gray-50 dark:bg-gray-800">
+              <CategoryIcon
+                name={getCategoryIcon(post.category)}
+                className="h-14 w-14 text-gray-300 dark:text-gray-600"
+              />
+            </div>
+          )}
+          {difficultyInfo && (
+            <span
+              className={`absolute right-3 top-3 rounded px-2.5 py-0.5 text-xs font-semibold ${difficultyInfo.className}`}
             >
-              #{tag}
+              {difficultyInfo.label}
+            </span>
+          )}
+        </div>
+
+        {/* テキスト */}
+        <div className="flex flex-1 flex-col justify-center p-5 md:p-8">
+          <div className="mb-2 flex items-center gap-2 text-xs">
+            <Link
+              href={`/category/${encodeURIComponent(post.category)}`}
+              className="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+            >
+              {post.category}
             </Link>
-          ))}
+            <span className="text-gray-300 dark:text-gray-600">·</span>
+            <time dateTime={post.date} className="text-gray-400 dark:text-gray-500">
+              {new Date(post.date).toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </time>
+          </div>
+
+          <h2 className="mb-3 text-xl font-bold leading-snug text-gray-900 transition-colors group-hover:text-primary-700 dark:text-white dark:group-hover:text-primary-400 md:text-2xl">
+            <Link href={`/${post.slug}`}>{post.title}</Link>
+          </h2>
+
+          <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+            {post.description}
+          </p>
+
+          <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-400 dark:text-gray-500">
+            {post.costRange && <span>費用 {post.costRange}</span>}
+            {post.studyPeriod && <span>期間 {post.studyPeriod}</span>}
+            {post.examInfo && <span>{post.examInfo}</span>}
+          </div>
         </div>
       </div>
     </article>

@@ -55,30 +55,31 @@ export default function Header({ categories = [], searchPosts = [] }: Props) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/80">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/90">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex items-center justify-between py-3">
-            <Link href="/" className="flex items-center gap-2">
+            {/* ロゴ */}
+            <Link href="/" className="flex items-center gap-2.5">
               <Image
                 src="/logo.png"
                 alt="シカクのミカタ"
-                width={32}
-                height={32}
+                width={28}
+                height={28}
                 className="rounded"
               />
-              <span className="gradient-text text-lg font-extrabold">
+              <span className="text-base font-extrabold tracking-tight text-gray-900 dark:text-white">
                 シカクのミカタ
               </span>
             </Link>
 
             {/* デスクトップナビ */}
             {categories.length > 0 && (
-              <nav className="hidden items-center gap-4 md:flex">
+              <nav className="hidden items-center gap-1 md:flex">
                 {categories.map((cat) => (
                   <Link
                     key={cat}
                     href={`/category/${encodeURIComponent(cat)}`}
-                    className="text-sm text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
+                    className="rounded-md px-3 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
                   >
                     {cat}
                   </Link>
@@ -87,91 +88,52 @@ export default function Header({ categories = [], searchPosts = [] }: Props) {
             )}
 
             <div className="flex items-center gap-1">
-              {/* 検索ボタン */}
+              {/* 検索 */}
               <button
                 onClick={() => setSearchOpen(true)}
                 aria-label="検索"
-                className="flex items-center gap-2 rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex items-center gap-2 rounded-md px-2 py-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               >
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
-                <kbd className="hidden rounded border border-gray-300 px-1.5 py-0.5 text-[10px] text-gray-400 md:inline-block dark:border-gray-600">
+                <kbd className="hidden rounded border border-gray-200 px-1.5 py-0.5 text-[10px] font-medium text-gray-400 md:inline-block dark:border-gray-700">
                   ⌘K
                 </kbd>
               </button>
 
+              {/* ダークモード */}
               <button
                 onClick={toggleDarkMode}
                 aria-label="テーマ切り替え"
-                className="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               >
                 {darkMode ? (
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                    />
+                  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 ) : (
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                    />
+                  <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                   </svg>
                 )}
               </button>
 
-              {/* ハンバーガーメニューボタン */}
+              {/* ハンバーガー */}
               {categories.length > 0 && (
                 <button
                   onClick={() => setMenuOpen((prev) => !prev)}
                   aria-label="メニュー"
-                  className="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+                  className="rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 md:hidden dark:hover:bg-gray-800 dark:hover:text-gray-200"
                 >
                   {menuOpen ? (
-                    <svg
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   ) : (
-                    <svg
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
+                    <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   )}
                 </button>
@@ -181,36 +143,28 @@ export default function Header({ categories = [], searchPosts = [] }: Props) {
 
           {/* モバイルメニュー */}
           <div
-            className={`overflow-hidden transition-all duration-300 md:hidden ${
+            className={`overflow-hidden transition-all duration-200 md:hidden ${
               menuOpen && categories.length > 0
                 ? "max-h-96 opacity-100"
                 : "max-h-0 opacity-0"
             }`}
           >
-            <nav className="border-t border-gray-200 pb-3 pt-2 dark:border-gray-700">
+            <nav className="border-t border-gray-100 pb-3 pt-2 dark:border-gray-800">
               {categories.map((cat) => (
                 <Link
                   key={cat}
                   href={`/category/${encodeURIComponent(cat)}`}
                   onClick={() => setMenuOpen(false)}
-                  className="block px-2 py-2 text-sm text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
+                  className="block rounded-md px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
                 >
                   {cat}
                 </Link>
               ))}
-              <Link
-                href="/categories"
-                onClick={() => setMenuOpen(false)}
-                className="block px-2 py-2 text-sm font-medium text-primary-600 dark:text-primary-400"
-              >
-                すべてのカテゴリ
-              </Link>
             </nav>
           </div>
         </div>
       </header>
 
-      {/* 検索モーダル */}
       <SearchModal
         posts={searchPosts}
         isOpen={searchOpen}

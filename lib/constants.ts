@@ -7,37 +7,37 @@ export const CATEGORIES = [
   {
     name: "資格比較",
     icon: "scale" as const,
-    description: "複数の資格や通信講座を徹底比較。あなたに最適な選択を見つけましょう。",
+    description: "複数の資格や通信講座を徹底比較",
     color: "primary",
   },
   {
     name: "ライフスタイル",
     icon: "heart" as const,
-    description: "暮らしを豊かにする資格。整理収納、食育、ペット関連など。",
+    description: "暮らしを豊かにする資格",
     color: "pink",
   },
   {
     name: "ビジネス",
     icon: "briefcase" as const,
-    description: "キャリアアップに直結するビジネス系資格。FP、簿記、秘書検定など。",
+    description: "キャリアアップに直結する資格",
     color: "amber",
   },
   {
     name: "IT・Web",
     icon: "code" as const,
-    description: "デジタル時代に求められるIT・Web系の資格やスキル認定。",
+    description: "デジタル時代のスキル認定",
     color: "emerald",
   },
   {
     name: "医療・健康",
     icon: "activity" as const,
-    description: "健康・医療・福祉分野の資格。薬膳、アロマ、メンタルヘルスなど。",
+    description: "健康・医療・福祉分野の資格",
     color: "rose",
   },
   {
     name: "クリエイティブ",
     icon: "palette" as const,
-    description: "デザイン・色彩・ハンドメイドなどクリエイティブ系の資格。",
+    description: "デザイン・色彩・ものづくり系",
     color: "violet",
   },
 ] as const;
@@ -50,22 +50,22 @@ export const DIFFICULTY_LABELS: Record<
 > = {
   1: {
     label: "入門",
-    className: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+    className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200",
   },
   2: {
     label: "初級",
-    className: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
+    className: "bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200",
   },
   3: {
     label: "中級",
-    className: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
+    className: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
   },
   4: {
     label: "上級",
-    className: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300",
+    className: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
   },
   5: {
     label: "難関",
-    className: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
+    className: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   },
 };

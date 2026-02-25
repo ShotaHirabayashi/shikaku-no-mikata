@@ -70,17 +70,11 @@ function JsonLd({
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-    },
+    author: { "@type": "Organization", name: SITE_NAME },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/logo.png`,
-      },
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
     },
     image: post.thumbnail ?? `${SITE_URL}/og-image.png`,
     mainEntityOfPage: {
@@ -111,9 +105,8 @@ export default async function ArticlePage({ params }: Props) {
       <JsonLd post={post} />
 
       {/* 記事ヘッダー */}
-      <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-        <div className="mx-auto max-w-6xl px-4 pb-8 pt-10">
-          {/* パンくず */}
+      <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl px-4 pb-8 pt-8">
           <Breadcrumb
             items={[
               { name: "ホーム", href: "/" },
@@ -125,18 +118,18 @@ export default async function ArticlePage({ params }: Props) {
             ]}
           />
 
-          {/* ヘッダー */}
-          <header className="mt-4">
-            <div className="mb-3 flex items-center gap-3">
+          <header className="mt-5">
+            <div className="mb-3 flex items-center gap-2 text-xs">
               <Link
                 href={`/category/${encodeURIComponent(post.category)}`}
-                className="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800"
+                className="font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
               >
                 {post.category}
               </Link>
+              <span className="text-gray-300 dark:text-gray-600">·</span>
               <time
                 dateTime={post.date}
-                className="text-sm text-gray-500 dark:text-gray-400"
+                className="text-gray-400 dark:text-gray-500"
               >
                 {new Date(post.date).toLocaleDateString("ja-JP", {
                   year: "numeric",
@@ -145,76 +138,54 @@ export default async function ArticlePage({ params }: Props) {
                 })}
               </time>
             </div>
-            <h1 className="mb-4 text-4xl font-extrabold leading-tight text-gray-900 dark:text-white md:text-5xl">
+            <h1 className="mb-3 max-w-3xl text-3xl font-extrabold leading-[1.3] tracking-tight text-gray-900 dark:text-white md:text-4xl">
               {post.title}
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="max-w-2xl text-sm leading-relaxed text-gray-500 dark:text-gray-400">
               {post.description}
             </p>
           </header>
         </div>
       </div>
 
-      {/* 2カラムレイアウト */}
+      {/* 2カラム */}
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 lg:flex-row">
-        {/* メインカラム */}
+        {/* メイン */}
         <article className="min-w-0 flex-1">
-          {/* 資格情報サマリー */}
           <QualificationSummary post={post} />
 
-          {/* 本文 */}
           <div className="article-content">
             <MdxContent source={post.content} />
           </div>
 
           {/* タグ */}
-          <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-700">
+          <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-800">
             {post.tags.map((tag) => (
               <Link
                 key={tag}
                 href={`/tag/${encodeURIComponent(tag)}`}
-                className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="rounded bg-gray-100 px-2.5 py-1 text-xs text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
               >
                 #{tag}
               </Link>
             ))}
           </div>
 
-          {/* SNSシェア */}
-          <ShareButtons
-            url={`${SITE_URL}/${post.slug}`}
-            title={post.title}
-          />
-
-          {/* 関連記事 */}
+          <ShareButtons url={`${SITE_URL}/${post.slug}`} title={post.title} />
           <RelatedPosts posts={relatedPosts} />
 
-          {/* 戻るリンク */}
           <div className="mt-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-1 text-primary-600 transition-colors hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
+              className="inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
             >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              記事一覧に戻る
+              ← 記事一覧に戻る
             </Link>
           </div>
         </article>
 
         {/* サイドバー */}
-        <aside className="w-full space-y-6 lg:sticky lg:top-20 lg:w-80 lg:self-start">
+        <aside className="w-full space-y-5 lg:sticky lg:top-20 lg:w-72 lg:self-start">
           <SidebarToc items={tocItems} />
           <SidebarPopularPosts posts={popularPosts} />
           <SidebarCategories categories={categories} />

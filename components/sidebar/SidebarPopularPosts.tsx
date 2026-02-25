@@ -9,24 +9,21 @@ export default function SidebarPopularPosts({ posts }: Props) {
   if (posts.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
-      <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white">
-        <svg className="h-4 w-4 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-        </svg>
+    <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+      <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
         人気記事
       </h3>
-      <ul className="space-y-3">
+      <ul className="space-y-0 divide-y divide-gray-100 dark:divide-gray-800">
         {posts.slice(0, 5).map((post, i) => (
           <li key={post.slug}>
             <Link
               href={`/${post.slug}`}
-              className="group flex items-start gap-3"
+              className="group flex items-start gap-3 py-2.5"
             >
-              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-bold text-primary-700 dark:bg-primary-900 dark:text-primary-300">
-                {i + 1}
+              <span className="flex-shrink-0 text-xs font-bold tabular-nums text-gray-300 dark:text-gray-600">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-sm text-gray-700 transition-colors group-hover:text-primary-600 dark:text-gray-300 dark:group-hover:text-primary-400">
+              <span className="text-sm leading-snug text-gray-600 transition-colors group-hover:text-primary-700 dark:text-gray-400 dark:group-hover:text-primary-400">
                 {post.title}
               </span>
             </Link>
