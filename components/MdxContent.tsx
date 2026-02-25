@@ -7,7 +7,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 const mdxComponents = {
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
-      className="mb-4 mt-10 border-b-2 border-primary-200 pb-2 text-2xl font-bold text-gray-900 dark:border-primary-800 dark:text-white"
+      className="mb-4 mt-10 border-l-4 border-primary-500 pl-4 text-2xl font-bold text-gray-900 dark:border-primary-400 dark:text-white"
       {...props}
     />
   ),
@@ -40,27 +40,39 @@ const mdxComponents = {
   ),
   blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote
-      className="mb-4 border-l-4 border-primary-400 bg-primary-50 py-2 pl-4 text-gray-700 dark:border-primary-600 dark:bg-gray-800 dark:text-gray-300"
+      className="relative mb-4 rounded-r-lg border-l-4 border-primary-400 bg-primary-50 py-3 pl-5 pr-4 text-gray-700 dark:border-primary-600 dark:bg-gray-800 dark:text-gray-300"
       {...props}
     />
   ),
   table: (props: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="mb-4 overflow-x-auto">
+    <div className="mb-4 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
       <table
         className="w-full border-collapse text-sm text-gray-700 dark:text-gray-300"
         {...props}
       />
     </div>
   ),
+  thead: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+    <thead
+      className="bg-primary-50 dark:bg-primary-950"
+      {...props}
+    />
+  ),
   th: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
     <th
-      className="border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold dark:border-gray-600 dark:bg-gray-700"
+      className="border-b border-gray-200 px-4 py-2.5 text-left font-semibold text-primary-700 dark:border-gray-700 dark:text-primary-300"
+      {...props}
+    />
+  ),
+  tr: (props: React.HTMLAttributes<HTMLTableRowElement>) => (
+    <tr
+      className="even:bg-gray-50 dark:even:bg-gray-800/50"
       {...props}
     />
   ),
   td: (props: React.HTMLAttributes<HTMLTableCellElement>) => (
     <td
-      className="border border-gray-300 px-4 py-2 dark:border-gray-600"
+      className="border-b border-gray-100 px-4 py-2.5 dark:border-gray-800"
       {...props}
     />
   ),

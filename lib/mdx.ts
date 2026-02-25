@@ -12,6 +12,13 @@ export type PostMeta = {
   category: string;
   tags: string[];
   thumbnail?: string;
+  difficulty?: 1 | 2 | 3 | 4 | 5;
+  costRange?: string;
+  studyPeriod?: string;
+  examInfo?: string;
+  passingRate?: string;
+  officialUrl?: string;
+  featured?: boolean;
 };
 
 export type Post = PostMeta & {
@@ -37,6 +44,13 @@ export function getAllPosts(): PostMeta[] {
       category: data.category ?? "",
       tags: data.tags ?? [],
       thumbnail: data.thumbnail,
+      difficulty: data.difficulty,
+      costRange: data.costRange,
+      studyPeriod: data.studyPeriod,
+      examInfo: data.examInfo,
+      passingRate: data.passingRate,
+      officialUrl: data.officialUrl,
+      featured: data.featured,
     };
   });
 
@@ -61,6 +75,13 @@ export function getPostBySlug(slug: string): Post | null {
     category: data.category ?? "",
     tags: data.tags ?? [],
     thumbnail: data.thumbnail,
+    difficulty: data.difficulty,
+    costRange: data.costRange,
+    studyPeriod: data.studyPeriod,
+    examInfo: data.examInfo,
+    passingRate: data.passingRate,
+    officialUrl: data.officialUrl,
+    featured: data.featured,
     content,
   };
 }
