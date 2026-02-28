@@ -5,6 +5,7 @@ import {
   getAllSlugs,
   getPostBySlug,
   getRelatedPosts,
+  getSameQualificationPosts,
   getAllPosts,
   getAllCategories,
 } from "@/lib/mdx";
@@ -14,6 +15,7 @@ import MdxContent from "@/components/MdxContent";
 import Breadcrumb from "@/components/Breadcrumb";
 import QualificationSummary from "@/components/QualificationSummary";
 import RelatedPosts from "@/components/RelatedPosts";
+import SameQualificationPosts from "@/components/SameQualificationPosts";
 import ShareButtons from "@/components/ShareButtons";
 import SidebarToc from "@/components/sidebar/SidebarToc";
 import SidebarPopularPosts from "@/components/sidebar/SidebarPopularPosts";
@@ -34,6 +36,9 @@ export function generateMetadata({ params }: Props): Metadata {
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: `${SITE_URL}/${post.slug}`,
+    },
     openGraph: {
       type: "article",
       title: post.title,
@@ -97,6 +102,8 @@ export default async function ArticlePage({ params }: Props) {
 
   const tocItems = extractToc(post.content);
   const relatedPosts = getRelatedPosts(post.slug);
+  const sameQualificationPosts = getSameQualificationPosts(post.slug);
+  const qualificationName = post.keyword?.split(/\s+/)[0] ?? "";
   const popularPosts = getAllPosts().slice(0, 5);
   const categories = getAllCategories();
 
@@ -157,6 +164,11 @@ export default async function ArticlePage({ params }: Props) {
           <div className="article-content">
             <MdxContent source={post.content} />
           </div>
+
+          <SameQualificationPosts
+            posts={sameQualificationPosts}
+            qualificationName={qualificationName}
+          />
 
           {/* タグ */}
           <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-800">

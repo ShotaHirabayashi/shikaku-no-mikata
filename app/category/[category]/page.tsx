@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getAllCategories, getPostsByCategory } from "@/lib/mdx";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import ArticleCard from "@/components/ArticleCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -19,6 +19,9 @@ export function generateMetadata({ params }: Props): Metadata {
   return {
     title: `${category}の記事一覧`,
     description: `${SITE_NAME}の「${category}」カテゴリの記事一覧です。`,
+    alternates: {
+      canonical: `${SITE_URL}/category/${encodeURIComponent(category)}`,
+    },
   };
 }
 

@@ -36,7 +36,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          '"Noto Sans JP"',
+          "var(--font-noto-sans-jp)",
           '"Hiragino Sans"',
           '"Hiragino Kaku Gothic ProN"',
           "Meiryo",

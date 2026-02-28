@@ -11,6 +11,7 @@ export type PostMeta = {
   date: string;
   category: string;
   tags: string[];
+  keyword?: string;
   thumbnail?: string;
   difficulty?: 1 | 2 | 3 | 4 | 5;
   costRange?: string;
@@ -43,6 +44,7 @@ export function getAllPosts(): PostMeta[] {
       date: data.date ?? "",
       category: data.category ?? "",
       tags: data.tags ?? [],
+      keyword: data.keyword,
       thumbnail: data.thumbnail,
       difficulty: data.difficulty,
       costRange: data.costRange,
@@ -74,6 +76,7 @@ export function getPostBySlug(slug: string): Post | null {
     date: data.date ?? "",
     category: data.category ?? "",
     tags: data.tags ?? [],
+    keyword: data.keyword,
     thumbnail: data.thumbnail,
     difficulty: data.difficulty,
     costRange: data.costRange,
@@ -129,14 +132,32 @@ export function getAllTags(): { name: string; count: number }[] {
   );
 }
 
+/**
+ * keywordから資格名を抽出（最初のスペース区切りの前半部分）
+ * 例: "整理収納アドバイザー 資格" → "整理収納アドバイザー"
+ */
+function extractQualificationName(keyword?: string): string | null {
+  if (!keyword) return null;
+  const name = keyword.split(/\s+/)[0];
+  return name && name.length >= 2 ? name : null;
+}
+
 export function getRelatedPosts(slug: string, limit = 4): PostMeta[] {
   const current = getPostBySlug(slug);
   if (!current) return [];
 
   const all = getAllPosts().filter((p) => p.slug !== slug);
+  const currentQualification = extractQualificationName(current.keyword);
 
   const scored = all.map((post) => {
     let score = 0;
+
+    // 同じ資格のキーワードを持つ記事を最優先
+    const postQualification = extractQualificationName(post.keyword);
+    if (currentQualification && postQualification && currentQualification === postQualification) {
+      score += 5;
+    }
+
     if (post.category === current.category) score += 3;
     for (const tag of post.tags) {
       if (current.tags.includes(tag)) score += 1;
@@ -149,4 +170,21 @@ export function getRelatedPosts(slug: string, limit = 4): PostMeta[] {
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map((s) => s.post);
+}
+
+/**
+ * 同じ資格に関する他の記事を取得（内部リンク用）
+ */
+export function getSameQualificationPosts(slug: string): PostMeta[] {
+  const current = getPostBySlug(slug);
+  if (!current) return [];
+
+  const currentQualification = extractQualificationName(current.keyword);
+  if (!currentQualification) return [];
+
+  return getAllPosts().filter((p) => {
+    if (p.slug === slug) return false;
+    const pQualification = extractQualificationName(p.keyword);
+    return pQualification === currentQualification;
+  });
 }
