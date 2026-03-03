@@ -64,6 +64,11 @@ export default function Footer() {
                   カテゴリ一覧
                 </Link>
               </li>
+              <li>
+                <Link href="/quiz" className="text-sm text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400">
+                  練習問題
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

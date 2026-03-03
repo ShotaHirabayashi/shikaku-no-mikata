@@ -9,6 +9,7 @@ import {
   getAllPosts,
   getAllCategories,
 } from "@/lib/mdx";
+import { getAllQualifications } from "@/lib/quiz";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { extractToc } from "@/lib/toc";
 import MdxContent from "@/components/MdxContent";
@@ -20,6 +21,7 @@ import ShareButtons from "@/components/ShareButtons";
 import SidebarToc from "@/components/sidebar/SidebarToc";
 import SidebarPopularPosts from "@/components/sidebar/SidebarPopularPosts";
 import SidebarCategories from "@/components/sidebar/SidebarCategories";
+import RelatedQuizBanner from "@/components/quiz/RelatedQuizBanner";
 
 type Props = {
   params: { slug: string };
@@ -107,6 +109,12 @@ export default async function ArticlePage({ params }: Props) {
   const popularPosts = getAllPosts().slice(0, 5);
   const categories = getAllCategories();
 
+  // 関連する練習問題を検索
+  const allQualifications = getAllQualifications();
+  const relatedQuiz = allQualifications.find((q) =>
+    q.relatedArticleSlugs.includes(post.slug)
+  );
+
   return (
     <>
       <JsonLd post={post} />
@@ -169,6 +177,8 @@ export default async function ArticlePage({ params }: Props) {
             posts={sameQualificationPosts}
             qualificationName={qualificationName}
           />
+
+          {relatedQuiz && <RelatedQuizBanner qualification={relatedQuiz} />}
 
           {/* タグ */}
           <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-800">

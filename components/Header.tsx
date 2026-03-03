@@ -73,19 +73,23 @@ export default function Header({ categories = [], searchPosts = [] }: Props) {
             </Link>
 
             {/* デスクトップナビ */}
-            {categories.length > 0 && (
-              <nav className="hidden items-center gap-1 md:flex">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat}
-                    href={`/category/${encodeURIComponent(cat)}`}
-                    className="rounded-md px-3 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                  >
-                    {cat}
-                  </Link>
-                ))}
-              </nav>
-            )}
+            <nav className="hidden items-center gap-1 md:flex">
+              {categories.map((cat) => (
+                <Link
+                  key={cat}
+                  href={`/category/${encodeURIComponent(cat)}`}
+                  className="rounded-md px-3 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                >
+                  {cat}
+                </Link>
+              ))}
+              <Link
+                href="/quiz"
+                className="rounded-md px-3 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              >
+                練習問題
+              </Link>
+            </nav>
 
             <div className="flex items-center gap-1">
               {/* 検索 */}
@@ -160,6 +164,13 @@ export default function Header({ categories = [], searchPosts = [] }: Props) {
                   {cat}
                 </Link>
               ))}
+              <Link
+                href="/quiz"
+                onClick={() => setMenuOpen(false)}
+                className="block rounded-md px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              >
+                練習問題
+              </Link>
             </nav>
           </div>
         </div>

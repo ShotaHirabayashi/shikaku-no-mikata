@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getAllCategories, getAllTags } from "@/lib/mdx";
+import { getAllQualifications, getQuizTopics } from "@/lib/quiz";
 import { SITE_URL } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -26,6 +27,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  // クイズ関連エントリ
+  const qualifications = getAllQualifications();
+  const quizQualificationEntries = qualifications.map((q) => ({
+    url: `${SITE_URL}/quiz/${q.slug}`,
+    lastModified: new Date(q.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+  const quizTopicEntries = qualifications.flatMap((q) =>
+    getQuizTopics(q.slug).map((t) => ({
+      url: `${SITE_URL}/quiz/${q.slug}/${t.slug}`,
+      lastModified: new Date(t.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }))
+  );
+
   return [
     {
       url: SITE_URL,
@@ -39,7 +57,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/quiz`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     ...postEntries,
+    ...quizQualificationEntries,
+    ...quizTopicEntries,
     ...categoryEntries,
     ...tagEntries,
     {
