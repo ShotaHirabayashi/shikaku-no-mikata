@@ -84,7 +84,10 @@ const mdxComponents = {
     />
   ),
   strong: (props: React.HTMLAttributes<HTMLElement>) => (
-    <strong className="font-bold text-gray-900 dark:text-white" {...props} />
+    <strong
+      className="rounded bg-gray-100 px-1 font-bold text-gray-900 dark:bg-gray-800 dark:text-white"
+      {...props}
+    />
   ),
   img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
     <figure className="my-6">
