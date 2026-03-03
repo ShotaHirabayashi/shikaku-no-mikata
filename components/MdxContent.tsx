@@ -3,6 +3,7 @@ import Image from "next/image";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import QuizAnswer from "@/components/quiz/QuizAnswer";
 
 const mdxComponents = {
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -120,18 +121,7 @@ const mdxComponents = {
       {...props}
     />
   ),
-  details: (props: React.DetailsHTMLAttributes<HTMLDetailsElement>) => (
-    <details
-      className="my-4 rounded-lg border border-gray-200 bg-gray-50/50 dark:border-gray-700 dark:bg-gray-800/30 [&[open]>summary]:mb-2"
-      {...props}
-    />
-  ),
-  summary: (props: React.HTMLAttributes<HTMLElement>) => (
-    <summary
-      className="cursor-pointer select-none px-4 py-3 text-sm font-semibold text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300"
-      {...props}
-    />
-  ),
+  QuizAnswer,
 };
 
 export default function MdxContent({ source }: { source: string }) {
