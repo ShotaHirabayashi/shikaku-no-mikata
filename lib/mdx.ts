@@ -98,6 +98,53 @@ export function getAllSlugs(): string[] {
     .map((f) => f.replace(/\.mdx$/, ""));
 }
 
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+/**
+ * MDXコンテンツ文字列からFAQセクションのQ&Aペアを抽出する。
+ * 「## よくある質問」「## FAQ」等のH2見出し以降にある
+ * **Q. 〜** と A. 〜 のペアを検出して配列で返す。
+ * FAQセクションがない場合は空配列を返す。
+ */
+export function extractFaqFromContent(content: string): FaqItem[] {
+  // FAQセクションの開始を検出（「よくある質問」「FAQ」を含むH2見出し）
+  const faqSectionRegex = /^##\s+.*(?:よくある質問|FAQ).*$/m;
+  const faqMatch = content.match(faqSectionRegex);
+  if (!faqMatch || faqMatch.index === undefined) return [];
+
+  // FAQセクションの開始位置から、次のH2見出しまでを切り出す
+  const faqStart = faqMatch.index + faqMatch[0].length;
+  const restContent = content.slice(faqStart);
+  const nextH2Match = restContent.match(/^## /m);
+  const faqSection = nextH2Match && nextH2Match.index !== undefined
+    ? restContent.slice(0, nextH2Match.index)
+    : restContent;
+
+  // **Q. 〜** パターンで質問を検出し、直後のA. 〜 で回答を取得
+  const faqs: FaqItem[] = [];
+  const qRegex = /\*\*Q[.．]\s*(.+?)\*\*/g;
+  let qMatch: RegExpExecArray | null;
+
+  while ((qMatch = qRegex.exec(faqSection)) !== null) {
+    const question = qMatch[1].trim();
+    // 質問の後の部分から回答を抽出
+    const afterQuestion = faqSection.slice(qMatch.index + qMatch[0].length);
+    // A. プレフィックスありまたはなしの回答を、次のQ.またはH2または文末まで取得
+    const answerMatch = afterQuestion.match(/\n\n(?:A[.．]\s*)?([\s\S]+?)(?=\n\n\*\*Q[.．]|\n\n##|\s*$)/);
+    if (answerMatch) {
+      const answer = answerMatch[1].trim();
+      if (question && answer) {
+        faqs.push({ question, answer });
+      }
+    }
+  }
+
+  return faqs;
+}
+
 export function getPostsByCategory(category: string): PostMeta[] {
   return getAllPosts().filter((post) => post.category === category);
 }

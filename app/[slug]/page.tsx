@@ -8,7 +8,9 @@ import {
   getSameQualificationPosts,
   getAllPosts,
   getAllCategories,
+  extractFaqFromContent,
 } from "@/lib/mdx";
+import type { FaqItem } from "@/lib/mdx";
 import { getAllQualifications } from "@/lib/quiz";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { extractToc } from "@/lib/toc";
@@ -68,10 +70,12 @@ export function generateMetadata({ params }: Props): Metadata {
 
 function JsonLd({
   post,
+  faqItems,
 }: {
   post: NonNullable<ReturnType<typeof getPostBySlug>>;
+  faqItems: FaqItem[];
 }) {
-  const jsonLd = {
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
@@ -90,11 +94,35 @@ function JsonLd({
     },
   };
 
+  const faqJsonLd =
+    faqItems.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        }
+      : null;
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+    </>
   );
 }
 
@@ -103,6 +131,7 @@ export default async function ArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const tocItems = extractToc(post.content);
+  const faqItems = extractFaqFromContent(post.content);
   const relatedPosts = getRelatedPosts(post.slug);
   const sameQualificationPosts = getSameQualificationPosts(post.slug);
   const qualificationName = post.keyword?.split(/\s+/)[0] ?? "";
@@ -117,7 +146,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <>
-      <JsonLd post={post} />
+      <JsonLd post={post} faqItems={faqItems} />
 
       {/* 記事ヘッダー */}
       <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
