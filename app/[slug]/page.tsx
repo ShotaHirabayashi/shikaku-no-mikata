@@ -58,6 +58,7 @@ export function generateMetadata({ params }: Props): Metadata {
         },
       ],
       publishedTime: post.date,
+      modifiedTime: post.dateModified || post.date,
     },
     twitter: {
       card: "summary_large_image",
@@ -81,6 +82,7 @@ function JsonLd({
     headline: post.title,
     description: post.description,
     datePublished: post.date,
+    dateModified: post.dateModified || post.date,
     author: { "@type": "Organization", name: SITE_NAME },
     publisher: {
       "@type": "Organization",

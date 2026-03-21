@@ -20,6 +20,7 @@ export type PostMeta = {
   passingRate?: string;
   officialUrl?: string;
   featured?: boolean;
+  dateModified?: string;
 };
 
 export type Post = PostMeta & {
@@ -53,6 +54,7 @@ export function getAllPosts(): PostMeta[] {
       passingRate: data.passingRate,
       officialUrl: data.officialUrl,
       featured: data.featured,
+      dateModified: data.dateModified,
     };
   });
 
@@ -85,6 +87,7 @@ export function getPostBySlug(slug: string): Post | null {
     passingRate: data.passingRate,
     officialUrl: data.officialUrl,
     featured: data.featured,
+    dateModified: data.dateModified,
     content,
   };
 }
