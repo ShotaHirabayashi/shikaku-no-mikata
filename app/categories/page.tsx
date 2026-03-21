@@ -1,13 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
-import { SITE_NAME, CATEGORIES } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, CATEGORIES } from "@/lib/constants";
 import Breadcrumb from "@/components/Breadcrumb";
 import ArticleCard from "@/components/ArticleCard";
 
 export const metadata: Metadata = {
   title: "カテゴリ一覧",
   description: `${SITE_NAME}の全カテゴリ一覧。資格比較、ライフスタイル、ビジネス、IT・Web、医療・健康、クリエイティブ。`,
+  alternates: {
+    canonical: `${SITE_URL}/categories`,
+  },
 };
 
 export default function CategoriesPage() {
@@ -20,6 +23,7 @@ export default function CategoriesPage() {
           { name: "ホーム", href: "/" },
           { name: "カテゴリ一覧" },
         ]}
+        currentPath="/categories"
       />
 
       <h1 className="mb-1 mt-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-3xl">

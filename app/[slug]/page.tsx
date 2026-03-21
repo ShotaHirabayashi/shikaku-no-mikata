@@ -160,6 +160,7 @@ export default async function ArticlePage({ params }: Props) {
               },
               { name: post.title },
             ]}
+            currentPath={`/${post.slug}`}
           />
 
           <header className="mt-5">

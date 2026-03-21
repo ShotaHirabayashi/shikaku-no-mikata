@@ -36,6 +36,7 @@ export default function TagPage({ params }: Props) {
           { name: "ホーム", href: "/" },
           { name: `#${tag}` },
         ]}
+        currentPath={`/tag/${encodeURIComponent(tag)}`}
       />
 
       <h1 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">

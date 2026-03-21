@@ -90,6 +90,7 @@ export default function QualificationPage({ params }: Props) {
               { name: "練習問題", href: "/quiz" },
               { name: qualification.qualificationName },
             ]}
+            currentPath={`/quiz/${params.qualification}`}
           />
           <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-4xl">
             {qualification.qualificationName} 練習問題

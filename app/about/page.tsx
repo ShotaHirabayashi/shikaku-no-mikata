@@ -5,6 +5,9 @@ import Breadcrumb from "@/components/Breadcrumb";
 export const metadata: Metadata = {
   title: "サイトについて",
   description: `${SITE_NAME}は、マイナー資格・通信講座の情報を徹底比較するメディアサイトです。`,
+  alternates: {
+    canonical: `${SITE_URL}/about`,
+  },
 };
 
 export default function AboutPage() {
@@ -15,6 +18,7 @@ export default function AboutPage() {
           { name: "ホーム", href: "/" },
           { name: "サイトについて" },
         ]}
+        currentPath="/about"
       />
 
       <h1 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">

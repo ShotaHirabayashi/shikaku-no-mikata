@@ -1,6 +1,7 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { getAllCategories, getPostsByCategory } from "@/lib/mdx";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, CATEGORIES } from "@/lib/constants";
 import ArticleCard from "@/components/ArticleCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -36,6 +37,7 @@ export default function CategoryPage({ params }: Props) {
           { name: "ホーム", href: "/" },
           { name: category },
         ]}
+        currentPath={`/category/${encodeURIComponent(category)}`}
       />
 
       <h1 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">
@@ -53,6 +55,24 @@ export default function CategoryPage({ params }: Props) {
           ))}
         </div>
       )}
+
+      {/* 他のカテゴリ */}
+      <section className="mt-16 border-t border-gray-200 pt-10 dark:border-gray-700">
+        <h2 className="mb-5 text-lg font-bold text-gray-900 dark:text-white">
+          他のカテゴリ
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          {CATEGORIES.filter((c) => c.name !== category).map((cat) => (
+            <Link
+              key={cat.name}
+              href={`/category/${encodeURIComponent(cat.name)}`}
+              className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600 transition-colors hover:border-primary-300 hover:text-primary-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-primary-600 dark:hover:text-primary-400"
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

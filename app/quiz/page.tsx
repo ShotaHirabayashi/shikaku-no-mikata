@@ -65,6 +65,7 @@ export default function QuizTopPage() {
               { name: "ホーム", href: "/" },
               { name: "練習問題" },
             ]}
+            currentPath="/quiz"
           />
           <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-4xl">
             練習問題

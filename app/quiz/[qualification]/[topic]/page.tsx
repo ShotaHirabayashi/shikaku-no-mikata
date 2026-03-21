@@ -104,6 +104,7 @@ export default function QuizTopicPage({ params }: Props) {
               },
               { name: topic.topicName },
             ]}
+            currentPath={`/quiz/${params.qualification}/${params.topic}`}
           />
 
           <header className="mt-5">

@@ -1,10 +1,13 @@
 import { Metadata } from "next";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description: `${SITE_NAME}へのお問い合わせはこちらのページからお願いいたします。`,
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+  },
 };
 
 export default function ContactPage() {
@@ -15,6 +18,7 @@ export default function ContactPage() {
           { name: "ホーム", href: "/" },
           { name: "お問い合わせ" },
         ]}
+        currentPath="/contact"
       />
 
       <h1 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">

@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { SITE_NAME, CATEGORIES } from "@/lib/constants";
+import { getAllTags } from "@/lib/mdx";
 
 export default function Footer() {
+  const popularTags = getAllTags()
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+
   return (
     <footer className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
       <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           {/* サイト説明 */}
           <div>
             <Link href="/" className="mb-3 inline-block">
@@ -32,6 +37,25 @@ export default function Footer() {
                     className="text-sm text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
                   >
                     {cat.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 人気タグ */}
+          <div>
+            <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+              人気タグ
+            </h3>
+            <ul className="space-y-2.5">
+              {popularTags.map((tag) => (
+                <li key={tag.name}>
+                  <Link
+                    href={`/tag/${encodeURIComponent(tag.name)}`}
+                    className="text-sm text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
+                  >
+                    #{tag.name}
                   </Link>
                 </li>
               ))}

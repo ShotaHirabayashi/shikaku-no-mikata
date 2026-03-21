@@ -1,10 +1,13 @@
 import { Metadata } from "next";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: `${SITE_NAME}のプライバシーポリシーです。個人情報の取り扱い、Cookie、アクセス解析について説明します。`,
+  alternates: {
+    canonical: `${SITE_URL}/privacy`,
+  },
 };
 
 export default function PrivacyPage() {
@@ -15,6 +18,7 @@ export default function PrivacyPage() {
           { name: "ホーム", href: "/" },
           { name: "プライバシーポリシー" },
         ]}
+        currentPath="/privacy"
       />
 
       <h1 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">

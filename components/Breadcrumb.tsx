@@ -6,16 +6,30 @@ export type BreadcrumbItem = {
   href?: string;
 };
 
-export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+type BreadcrumbProps = {
+  items: BreadcrumbItem[];
+  currentPath?: string;
+};
+
+export default function Breadcrumb({ items, currentPath }: BreadcrumbProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      ...(item.href ? { item: `${SITE_URL}${item.href}` } : {}),
-    })),
+    itemListElement: items.map((item, i) => {
+      const isLast = i === items.length - 1;
+      const url = item.href
+        ? `${SITE_URL}${item.href}`
+        : isLast && currentPath
+          ? `${SITE_URL}${currentPath}`
+          : undefined;
+
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        ...(url ? { item: url } : {}),
+      };
+    }),
   };
 
   return (
